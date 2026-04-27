@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MarPla - SEO Product Description Generator</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Inter, Arial, sans-serif;
+        background: #f6f8fb;
+        color: #111827;
+      }
+      .page {
+        max-width: 900px;
+        margin: 24px auto;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 28px 30px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+      }
+      .brand img {
+        width: 64px;
+        height: 64px;
+        border-radius: 999px;
+        border: 1px solid #e5e7eb;
+      }
+      h1 {
+        margin: 0;
+        font-size: 28px;
+      }
+      h2 {
+        margin: 20px 0 10px;
+        font-size: 18px;
+        color: #1f2937;
+      }
+      p {
+        margin: 0 0 8px;
+        line-height: 1.5;
+      }
+      ul {
+        margin: 8px 0 0 18px;
+      }
+      li {
+        margin-bottom: 5px;
+        line-height: 1.45;
+      }
+      .muted {
+        color: #6b7280;
+      }
+      .chip {
+        display: inline-block;
+        margin-right: 6px;
+        margin-top: 6px;
+        padding: 5px 10px;
+        font-size: 13px;
+        border-radius: 999px;
+        background: #eef2ff;
+        color: #3730a3;
+      }
+      code {
+        background: #f3f4f6;
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .page {
+          margin: 0;
+          border: 0;
+          border-radius: 0;
+          padding: 0;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="brand">
+        <img src="./frontend/public/marpla-logo.png" alt="MarPla logo" />
+        <div>
+          <h1>MarPla - SEO Product Description Generator</h1>
+          <p class="muted">Финальная передача заказчику (One Pager)</p>
+        </div>
+      </section>
+
+      <div>
+        <span class="chip">NestJS</span>
+        <span class="chip">React + Vite</span>
+        <span class="chip">Telegram Web App</span>
+        <span class="chip">Flowise-ready</span>
+        <span class="chip">SSE Streaming</span>
+      </div>
+
+      <h2>Цель</h2>
+      <p>Сервис генерации SEO-описаний товаров для e-commerce с потоковой выдачей, строгой валидацией структуры и устойчивостью к ошибкам AI.</p>
+
+      <h2>Что реализовано</h2>
+      <ul>
+        <li>Форма ввода: <code>product_name</code>, <code>category</code>, <code>keywords</code>.</li>
+        <li>Генерация структуры: <code>title</code>, <code>meta_description</code>, <code>h1</code>, <code>description</code>, <code>bullets[]</code>.</li>
+        <li>Endpoint: <code>POST /api/generate-seo</code> (JSON).</li>
+        <li>Endpoint: <code>POST /api/generate-seo/stream</code> (SSE: <code>seo-token</code>, <code>seo-done</code>, <code>seo-fallback</code>).</li>
+      </ul>
+
+      <h2>Надежность</h2>
+      <ul>
+        <li>Timeout внешнего AI-запроса.</li>
+        <li>DTO validation + JSON schema validation.</li>
+        <li>Graceful fallback при пустом/битом ответе.</li>
+        <li>Логирование этапов и CI-проверка сборки.</li>
+      </ul>
+
+      <h2>Запуск</h2>
+      <ul>
+        <li>Локально: <code>npm install</code> -> <code>npm run dev:backend</code> + <code>npm run dev:frontend</code>.</li>
+        <li>Docker: <code>docker compose up --build</code>, затем открыть <code>http://localhost:8080</code>.</li>
+      </ul>
+
+      <h2>Статус для ТЗ</h2>
+      <p>Проект поставлен в demo-ready режиме: <code>FLOWISE_MOCK_MODE=true</code>, поэтому заказчик может сразу проверить полный сценарий без реальных API-ключей.</p>
+    </main>
+  </body>
+</html>
