@@ -18,15 +18,27 @@ export class FlowiseSeoService {
   private readonly defaultFlowId: string;
   private readonly timeoutMs: number;
   private readonly flowiseApiKey?: string;
+  private readonly mockMode: boolean;
 
   constructor(private readonly configService: ConfigService) {
     this.flowiseBaseUrl = this.configService.get<string>('FLOWISE_BASE_URL', '');
     this.defaultFlowId = this.configService.get<string>('FLOWISE_SEO_FLOW_ID', '');
     this.timeoutMs = this.configService.get<number>('FLOWISE_TIMEOUT_MS', DEFAULT_TIMEOUT_MS);
     this.flowiseApiKey = this.configService.get<string>('FLOWISE_API_KEY');
+    this.mockMode = this.configService.get<string>('FLOWISE_MOCK_MODE', 'true') === 'true';
   }
 
   async *generateSeoStream(dto: GenerateSeoDto): AsyncGenerator<SeoChunkEvent> {
+    if (this.mockMode) {
+      const mock = this.buildMockResult(dto);
+      const json = JSON.stringify(mock);
+      for (let i = 0; i < json.length; i += 48) {
+        yield { type: 'token', chunk: json.slice(i, i + 48) };
+      }
+      yield { type: 'done', data: mock };
+      return;
+    }
+
     let finalText = '';
 
     this.logger.log(`Flowise stream started for "${dto.input.product_name}"`);
@@ -72,6 +84,10 @@ export class FlowiseSeoService {
   }
 
   async generateSeoNonStreaming(dto: GenerateSeoDto): Promise<SeoGenerationResult> {
+    if (this.mockMode) {
+      return this.buildMockResult(dto);
+    }
+
     this.logger.log(`Flowise request started for "${dto.input.product_name}"`);
 
     try {
@@ -179,6 +195,22 @@ export class FlowiseSeoService {
         `Категория: ${category}`,
         `SEO-ключи: ${keywordsText}`,
         'Оптимизировано для карточки товара',
+      ],
+    };
+  }
+
+  private buildMockResult(dto: GenerateSeoDto): SeoGenerationResult {
+    const { product_name, category, keywords } = dto.input;
+    const keywordsText = keywords.join(', ');
+    return {
+      title: `${product_name} - купить в категории ${category}`,
+      meta_description: `Купите ${product_name} в категории ${category}. Запросы: ${keywordsText}. Быстрая доставка, гарантия и выгодная цена.`,
+      h1: `${product_name}: лучшее решение в категории ${category}`,
+      description: `${product_name} - современный товар из категории ${category}. Он подходит покупателям, которые ищут ${keywordsText}. Карточка оптимизирована для SEO и конверсии: акцент на преимуществах, понятных характеристиках и доверии к бренду.\n\nЗакажите ${product_name} онлайн с доставкой и поддержкой. Текст подходит для маркетплейса, интернет-магазина и тестового ТЗ.`,
+      bullets: [
+        `Релевантные ключи: ${keywordsText}`,
+        `Категория товара: ${category}`,
+        'SEO-структура готова для публикации',
       ],
     };
   }

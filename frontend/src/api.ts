@@ -1,6 +1,6 @@
 import type { GenerateSeoInput, SeoResult } from './types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
 export async function generateSeo(body: GenerateSeoInput): Promise<SeoResult> {
   const response = await fetch(`${API_BASE_URL}/api/generate-seo`, {
