@@ -67,7 +67,14 @@ export default function App(): JSX.Element {
 
   return (
     <main className="container">
-      <h1>SEO Product Description Generator</h1>
+      <header className="brand card">
+        <img className="brand-logo" src="/marpla-logo.png" alt="MarPla" />
+        <div>
+          <h1>MarPla SEO Product Description Generator</h1>
+          <p className="muted">Демо-версия для проверки заказчиком (NestJS + Flowise-ready + TWA)</p>
+        </div>
+      </header>
+
       <form className="card" onSubmit={onSubmit}>
         <label>
           Название товара
